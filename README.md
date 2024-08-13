@@ -22,26 +22,39 @@ This script automates the process of upgrading a Debian-based system with extens
 - Active internet connection.
 
 ## Usage
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ptech2009/debian-upgrade-script.git
 
-Navigate to the script directory:
-cd debian-upgrade-script
+Download the Script:
+Navigate to the Releases page of this repository.
+Locate the latest release and click on the Source code (zip) link to download the script as a ZIP file.
 
-Make the script executable:
+Extract the ZIP File:
+Once the download is complete, extract the ZIP file to your desired location on your system.
+
+Navigate to the Script Directory:
+Open a terminal and navigate to the extracted directory. For example:
+
+cd path_to_extracted_folder/debian-upgrade-script
+
+Make the Script Executable:
+
+Ensure the script has executable permissions by running:
+
 chmod +x debian-upgrade.sh
 
-Run the script with root privileges:
+Run the Script:
+
+Execute the script with root privileges:
+
 sudo ./debian-upgrade.sh
 
-Versioning
+## Versioning
 
 This project uses Semantic Versioning. For the available versions, see the tags on this repository.
 Contributing
 
 Feel free to submit issues and pull requests. Contributions are welcome.
-License
+
+## Licence
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 Contact
