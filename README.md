@@ -50,6 +50,7 @@ sudo ./debian-upgrade.sh
 ## Versioning
 
 This project uses Semantic Versioning. For the available versions, see the tags on this repository.
+
 Contributing
 
 Feel free to submit issues and pull requests. Contributions are welcome.
