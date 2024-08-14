@@ -58,6 +58,7 @@ Feel free to submit issues and pull requests. Contributions are welcome.
 ## Licence
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
 Contact
 
 For any questions or suggestions, feel free to reach out via GitHub Issues or contact ptech09@schumacher.or.at
