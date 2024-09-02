@@ -136,17 +136,11 @@ cp -r /etc/apt/sources.list* "$BACKUP_DIR"
 
 echo "Backup abgeschlossen und gespeichert unter: $BACKUP_DIR"
 
-# System auf den neuesten Stand bringen
-echo "Aktualisiere das aktuelle System..."
+# System auf den neuesten Stand bringen und Fehler beheben
+echo "Aktualisiere das aktuelle System und behebe mögliche Paketfehler..."
 apt-get update
 if [ $? -ne 0 ]; then
     echo "Fehler: apt-get update ist fehlgeschlagen." >&2
-    exit 1
-fi
-
-apt-get upgrade -y
-if [ $? -ne 0 ]; then
-    echo "Fehler: apt-get upgrade ist fehlgeschlagen." >&2
     exit 1
 fi
 
@@ -156,9 +150,25 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Fehlerhafte Pakete reparieren
+echo "Überprüfe und repariere eventuell beschädigte Pakete..."
+apt --fix-broken install -y
+if [ $? -ne 0 ]; then
+    echo "Fehler: apt --fix-broken install ist fehlgeschlagen." >&2
+    exit 1
+fi
+
+# Systembereinigung nach dem Upgrade
+echo "Bereinigung des Systems nach dem Upgrade..."
 apt-get --purge autoremove -y
 if [ $? -ne 0 ]; then
     echo "Fehler: autoremove ist fehlgeschlagen." >&2
+    exit 1
+fi
+
+apt-get autoclean -y
+if [ $? -ne 0 ]; then
+    echo "Fehler: autoclean ist fehlgeschlagen." >&2
     exit 1
 fi
 
@@ -197,12 +207,6 @@ echo "Starte Systemaktualisierung auf Debian $NEW_VERSION..."
 apt-get update
 if [ $? -ne 0 ]; then
     echo "Fehler: apt-get update ist fehlgeschlagen." >&2
-    exit 1
-fi
-
-apt-get upgrade -y
-if [ $? -ne 0 ]; then
-    echo "Fehler: apt-get upgrade ist fehlgeschlagen." >&2
     exit 1
 fi
 
