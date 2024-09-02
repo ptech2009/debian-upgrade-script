@@ -8,9 +8,11 @@ This script automates the process of upgrading a Debian-based system with extens
 - Ensures the script is run with root privileges.
 - Automatically fetches the latest stable Debian version.
 - Checks the connection to Debian servers.
+- Changes package sources: Updates the package sources to the latest Debian version.
 - Detects and optionally removes foreign packages.
 - Identifies and optionally disables PPA repositories.
 - Verifies available disk space before starting the upgrade.
+- Checks pending configuration changes: Finds and configures pending system configuration files.
 - Backs up configuration files and current package sources.
 - Updates the system to the latest version.
 - Repairs defective packages: Checks and repairs any dependency issues or corrupted packages after the upgrade process.
