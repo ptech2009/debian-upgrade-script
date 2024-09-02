@@ -13,6 +13,7 @@ This script automates the process of upgrading a Debian-based system with extens
 - Verifies available disk space before starting the upgrade.
 - Backs up configuration files and current package sources.
 - Updates the system to the latest version.
+- Repairs defective packages: Checks and repairs any dependency issues or corrupted packages after the upgrade process.
 - Cleans up the system post-upgrade.
 - Reboots the system to apply the updates.
 
