@@ -1,102 +1,67 @@
-Debian Upgrade Script
-Overview
+# Debian Upgrade Script
 
-This script automates the process of upgrading a Debian-based system with comprehensive safety checks and options for automation to ensure a smooth and secure upgrade experience.
-Features
+## Overview
+This script automates the process of upgrading a Debian-based system with extensive safety checks and interactive prompts to ensure a smooth and secure upgrade.
 
-    Prevents multiple executions with a lock file.
-    Ensures the script is run with root privileges.
-    Allows specifying a target Debian version.
-    Checks the connection to Debian servers.
-    Safely updates package sources to the target Debian version, preserving custom configurations.
-    Detects and optionally removes foreign packages (non-official Debian packages).
-    Identifies and optionally disables external repositories (non-official Debian repositories).
-    Verifies available disk space before starting the upgrade, measuring in Gigabytes.
-    Checks pending configuration changes.
-    Backs up existing configuration files and package sources before modification.
-    Updates the system to the latest packages in the current version before upgrading.
-    Repairs defective packages by fixing broken dependencies.
-    Cleans up the system post-upgrade by removing unnecessary packages and cache files.
-    Provides options to automate the upgrade process, reducing or eliminating the need for user interaction.
-    Optionally reboots the system automatically after the upgrade completes.
+## Features
+- Prevents multiple executions with a lock file.
+- Ensures the script is run with root privileges.
+- Automatically fetches the latest stable Debian version.
+- Checks the connection to Debian servers.
+- Changes package sources: Updates the package sources to the latest Debian version.
+- Detects and optionally removes foreign packages.
+- Identifies and optionally disables PPA repositories.
+- Verifies available disk space before starting the upgrade.
+- Checks pending configuration changes: Finds and configures pending system configuration files.
+- Backs up configuration files and current package sources.
+- Updates the system to the latest version.
+- Repairs defective packages: Checks and repairs any dependency issues or corrupted packages after the upgrade process.
+- Cleans up the system post-upgrade.
+- Reboots the system to apply the updates.
 
-Requirements
+## Requirements
+- Debian-based system.
+- Root privileges.
+- Active internet connection.
 
-    Debian-based system.
-    Root privileges.
-    Active internet connection.
-    aptitude package (will be installed automatically if not present).
+## Usage
 
-Usage
-Command-Line Options
+Download the Script:
+Navigate to the Releases page of this repository.
+Locate the latest release and click on the Source code (zip) link to download the script as a ZIP file.
 
-    --auto-remove-foreign
-        Automatically removes foreign (non-official) packages identified during the upgrade process.
+Extract the ZIP File:
+Once the download is complete, extract the ZIP file to your desired location on your system.
 
-    --disable-external-repos
-        Automatically disables external repositories that are not part of the official Debian repositories.
-
-    --auto-reboot
-        Automatically reboots the system after the upgrade is completed.
-
-    -h, --help
-        Displays the help message with usage instructions.
-
-Examples
-
-    Fully Automated Upgrade
-
-    To perform a fully automated upgrade with all optional automations enabled:
-
-sudo bash debian-upgrade.sh --auto-remove-foreign --disable-external-repos --auto-reboot
-
-Upgrade with Manual Control
-
-To perform an upgrade without automatic removal of foreign packages, disabling external repositories, or automatic reboot:
-
-    sudo bash debian-upgrade.sh
-
-    This allows you to review and handle any identified issues manually.
-
-Steps
-
-    Download the Script
-
-    Navigate to the Releases page of this repository. Locate the latest release and click on the Source code (zip) link to download the script as a ZIP file.
-
-    Extract the ZIP File
-
-    Once the download is complete, extract the ZIP file to your desired location on your system.
-
-    Navigate to the Script Directory
-
-    Open a terminal and navigate to the extracted directory. For example:
+Navigate to the Script Directory:
+Open a terminal and navigate to the extracted directory. For example:
 
 cd path_to_extracted_folder/debian-upgrade-script
 
-Make the Script Executable
+Make the Script Executable:
 
 Ensure the script has executable permissions by running:
 
 chmod +x debian-upgrade.sh
 
-Run the Script
+Run the Script:
 
 Execute the script with root privileges:
 
-    sudo ./debian-upgrade.sh [options]
+sudo ./debian-upgrade.sh
 
-    Replace [options] with any of the command-line options as needed.
-
-Versioning
+## Versioning
 
 This project uses Semantic Versioning. For the available versions, see the tags on this repository.
+
 Contributing
 
 Feel free to submit issues and pull requests. Contributions are welcome.
-License
+
+## Licence
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
 Contact
 
-For any questions or suggestions, feel free to reach out via GitHub Issues or contact ptech09@schumacher.or.at.
+For any questions or suggestions, feel free to reach out via GitHub Issues or contact ptech09@schumacher.or.at
