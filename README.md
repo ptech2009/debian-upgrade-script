@@ -6,7 +6,8 @@ Features
 
     Prevents multiple executions with a lock file.
     Ensures the script is run with root privileges.
-    Allows specifying a target Debian version.
+    Automatically detects the latest stable Debian version to upgrade to.
+    Allows specifying a target Debian version manually if desired.
     Checks the connection to Debian servers.
     Safely updates package sources to the target Debian version, preserving custom configurations.
     Detects and optionally removes foreign packages (non-official Debian packages).
@@ -43,10 +44,9 @@ Command-Line Options
         Displays the help message with usage instructions.
 
 Examples
+Fully Automated Upgrade
 
-    Fully Automated Upgrade
-
-    To perform a fully automated upgrade with all optional automations enabled:
+To perform a fully automated upgrade with all optional automations enabled:
 
 sudo bash debian-upgrade.sh --auto-remove-foreign --disable-external-repos --auto-reboot
 
@@ -54,10 +54,22 @@ Upgrade with Manual Control
 
 To perform an upgrade without automatic removal of foreign packages, disabling external repositories, or automatic reboot:
 
-    sudo bash debian-upgrade.sh
+sudo bash debian-upgrade.sh
 
-    This allows you to review and handle any identified issues manually.
+This allows you to review and handle any identified issues manually.
+Specifying a Target Debian Version Manually
 
+By default, the script automatically detects and upgrades to the latest stable Debian version. If you wish to specify a target Debian version manually, you can edit the script and set the TARGET_VERSION variable to your desired version. For example:
+
+# In the script, find the line:
+
+# TARGET_VERSION=$(get_latest_debian_version)
+
+# And replace it with:
+
+TARGET_VERSION="bullseye"  # For Debian 11
+
+Note: Manual changes to the script should be done carefully.
 Steps
 
     Download the Script
