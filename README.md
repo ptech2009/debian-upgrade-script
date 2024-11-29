@@ -1,67 +1,62 @@
-# Debian Upgrade Script
+Debian Upgrade Script
+Overview
 
-## Overview
 This script automates the process of upgrading a Debian-based system with extensive safety checks and interactive prompts to ensure a smooth and secure upgrade.
+Features
 
-## Features
-- Prevents multiple executions with a lock file.
-- Ensures the script is run with root privileges.
-- Automatically fetches the latest stable Debian version.
-- Checks the connection to Debian servers.
-- Changes package sources: Updates the package sources to the latest Debian version.
-- Detects and optionally removes foreign packages.
-- Identifies and optionally disables PPA repositories.
-- Verifies available disk space before starting the upgrade.
-- Checks pending configuration changes: Finds and configures pending system configuration files.
-- Backs up configuration files and current package sources.
-- Updates the system to the latest version.
-- Repairs defective packages: Checks and repairs any dependency issues or corrupted packages after the upgrade process.
-- Cleans up the system post-upgrade.
-- Reboots the system to apply the updates.
+    Prevents multiple executions with a lock file.
+    Ensures the script is run with root privileges.
+    Allows specifying a target Debian version (e.g., bookworm).
+    Checks the connection to Debian servers.
+    Automatically updates package sources to the specified Debian version.
+    Detects and optionally removes foreign packages.
+    Identifies and optionally disables non-official Debian repositories.
+    Verifies available disk space before starting the upgrade.
+    Detects pending configuration changes: Lists and addresses unresolved .dpkg-new or .ucf-dist files.
+    Backs up configuration files and current package sources.
+    Updates the system to the latest version of the specified Debian release.
+    Repairs defective packages: Checks and repairs dependency issues or corrupted packages after the upgrade process.
+    Cleans up the system post-upgrade: Removes unnecessary files and outdated packages.
+    Optionally performs an automatic reboot after the upgrade is complete.
 
-## Requirements
-- Debian-based system.
-- Root privileges.
-- Active internet connection.
+Requirements
 
-## Usage
+    Debian-based system.
+    Root privileges.
+    Active internet connection.
 
-Download the Script:
-Navigate to the Releases page of this repository.
-Locate the latest release and click on the Source code (zip) link to download the script as a ZIP file.
+Usage
+Download the Script
 
-Extract the ZIP File:
-Once the download is complete, extract the ZIP file to your desired location on your system.
+Download or copy the script into a new file named debian-upgrade.sh.
+Make the Script Executable
 
-Navigate to the Script Directory:
-Open a terminal and navigate to the extracted directory. For example:
+Grant executable permissions to the script:
 
-cd path_to_extracted_folder/debian-upgrade-script
+chmod +x debian-upgrade.sh  
 
-Make the Script Executable:
-
-Ensure the script has executable permissions by running:
-
-chmod +x debian-upgrade.sh
-
-Run the Script:
+Run the Script
 
 Execute the script with root privileges:
 
-sudo ./debian-upgrade.sh
+sudo ./debian-upgrade.sh [options]  
 
-## Versioning
+Options
 
-This project uses Semantic Versioning. For the available versions, see the tags on this repository.
+    --auto-remove-foreign: Automatically removes foreign packages.
+    --disable-external-repos: Automatically disables non-official repositories.
+    --auto-reboot: Performs a system reboot after the upgrade.
+    -h, --help: Displays the help menu with available options.
 
+Versioning
+
+This project uses Semantic Versioning. For available versions, see the tags on this repository.
 Contributing
 
 Feel free to submit issues and pull requests. Contributions are welcome.
-
-## Licence
+Licence
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-
 Contact
 
-For any questions or suggestions, feel free to reach out via GitHub Issues or contact ptech09@schumacher.or.at
+For any questions or suggestions, feel free to reach out via GitHub Issues or contact ptech09@schumacher.or.at.
