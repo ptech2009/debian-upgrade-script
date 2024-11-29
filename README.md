@@ -2,6 +2,7 @@ Debian Upgrade Script
 Overview
 
 This script automates the process of upgrading a Debian-based system with comprehensive safety checks and options for automation to ensure a smooth and secure upgrade experience.
+
 Features
 
     Prevents multiple executions with a lock file.
