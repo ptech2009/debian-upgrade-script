@@ -36,11 +36,11 @@ Command-Line Options
 📖 Examples
 Fully Automated Upgrade
 
-sudo bash debian-upgrade.sh --auto-remove-foreign --disable-external-repos --auto-reboot
+    sudo bash debian-upgrade.sh --auto-remove-foreign --disable-external-repos --auto-reboot
 
 Upgrade with Manual Control
 
-sudo bash debian-upgrade.sh
+    sudo bash debian-upgrade.sh
 
     Allows you to review and handle identified issues manually.
 
@@ -48,31 +48,31 @@ sudo bash debian-upgrade.sh
 
 By default, the script upgrades to the latest stable Debian version. To specify a target version, modify the following line in the script:
 
-TARGET_VERSION=$(get_latest_debian_version)
+    TARGET_VERSION=$(get_latest_debian_version)
 
 Replace it with:
 
-TARGET_VERSION="bullseye"  # For Debian 11
+    TARGET_VERSION="bullseye"  # For Debian 11
 
-    ⚠️ Note: Manual changes to the script should be made carefully.
+⚠️ Note: Manual changes to the script should be made carefully.
 
 🖥 Installation Steps
 
-    Download the Script
-    Visit the Releases page and download the latest version.
+Download the Script
+Visit the Releases page and download the latest version.
 
-    Extract the ZIP File
-    Unpack the ZIP file to your desired location.
+Extract the ZIP File
+Unpack the ZIP file to your desired location.
 
-    Navigate to the Script Directory
-    Open a terminal and navigate to the extracted directory:
+Navigate to the Script Directory
+Open a terminal and navigate to the extracted directory:
 
-cd path_to_extracted_folder/debian-upgrade-script
+    cd path_to_extracted_folder/debian-upgrade-script
 
 Make the Script Executable
 Grant execution permissions to the script:
 
-chmod +x debian-upgrade.sh
+    chmod +x debian-upgrade.sh
 
 Run the Script
 Execute the script with root privileges:
