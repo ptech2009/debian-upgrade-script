@@ -4,7 +4,7 @@ Overview
 This script automates the process of upgrading a Debian-based system with comprehensive safety checks and options for automation to ensure a smooth and secure upgrade experience.
 Features
 
-Prevents multiple executions with a lock file.
+    Prevents multiple executions with a lock file.
     Ensures the script is run with root privileges.
     Allows specifying a target Debian version.
     Checks the connection to Debian servers.
