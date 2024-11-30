@@ -1,83 +1,80 @@
-Debian Upgrade Script Overview
+# Debian Upgrade Script
 
-This script automates the process of upgrading a Debian-based system. It provides comprehensive safety checks and automation options to ensure a smooth and secure upgrade experience.
-🚀 Features
+## Overview
 
-    🛡 Safety: Prevents multiple executions with a lock file.
-    🔑 Root Check: Ensures the script is run with root privileges.
-    📡 Automatic Version Detection: Automatically detects the latest stable Debian version.
-    ✍️ Manual Target Version: Allows specifying a target Debian version manually.
-    🌐 Connection Check: Verifies connection to Debian servers.
-    🔧 Source Update: Updates package sources while preserving custom configurations.
-    🗑 Foreign Package Removal: Detects and optionally removes non-official Debian packages.
-    💾 Disk Space Check: Verifies available disk space before upgrading.
-    🔍 Configuration Backup: Backs up existing configuration files and package sources.
-    🛠 System Update: Updates the system to the latest packages of the current version.
-    ⚙️ Repair Tools: Fixes defective packages and broken dependencies.
-    🧹 Post-Upgrade Cleanup: Removes unnecessary packages and cache files.
-    🔄 Automation: Provides options for fully automating the upgrade process.
-    🔁 Automatic Reboot: Optionally reboots the system after the upgrade is complete.
+This script automates the process of upgrading a Debian-based system. It provides comprehensive safety checks and interactive options to ensure a smooth and secure upgrade experience.
 
-🛠 Requirements
+### 🚀 Features
 
-    Debian-based system
-    Root privileges
-    Active internet connection
-    aptitude package (will be installed automatically if not present)
+- 🛡 **Safety:** Prevents multiple executions with a lock file.
+- 🔑 **Root Privilege Check:** Ensures the script is run with root privileges.
+- 📡 **Automatic Version Detection:** Automatically detects the current and latest stable Debian versions.
+- ✍️ **Manual Target Version:** Allows specifying a target Debian version manually.
+- 🌐 **Connection Check:** Verifies connectivity to Debian servers.
+- 🔧 **Source Update:** Updates package sources while preserving custom configurations.
+- 🗑 **Foreign Package Detection:** Identifies and offers to remove non-official Debian packages.
+- 💾 **Disk Space Check:** Verifies available disk space before upgrading.
+- 🔍 **Configuration Backup:** Backs up existing configuration files and package sources.
+- 🛠 **System Update:** Updates the system to the latest packages of the current version.
+- 🔄 **Interactive Decisions:** Provides the user with control over critical steps during the upgrade.
+- 🔁 **Automatic Reboot:** Optionally reboots the system after the upgrade is complete.
 
-🔧 Usage
-Command-Line Options
+## 🛠 Requirements
 
-    --auto-remove-foreign: Automatically removes foreign (non-official) packages.
-    --disable-external-repos: Automatically disables external repositories not part of official Debian.
-    --auto-reboot: Reboots the system after the upgrade is complete.
-    -h, --help: Displays the help message with usage instructions.
+- Debian-based system
+- Root privileges
+- Active internet connection
+- `aptitude`, `lsb-release`, `curl` or `wget` (will be installed automatically if not present)
 
-📖 Examples
-Fully Automated Upgrade
+## 🔧 Usage
 
-    sudo bash debian-upgrade.sh --auto-remove-foreign --disable-external-repos --auto-reboot
+### Command-Line Options
 
-Upgrade with Manual Control
+- `--auto-reboot`: Automatically reboots the system after the upgrade is complete.
+- `-h`, `--help`: Displays the help message with usage instructions.
 
-    sudo bash debian-upgrade.sh
+### Examples
 
-    Allows you to review and handle identified issues manually.
+**Upgrade with Automatic Reboot:**
+
+```bash
+sudo bash debian-upgrade.sh --auto-reboot
+
+Upgrade with Manual Control:
+
+sudo bash debian-upgrade.sh
+
+Note: The script may require user input during execution to confirm decisions.
 
 📝 Manually Specify Target Version
 
 By default, the script upgrades to the latest stable Debian version. To specify a target version, modify the following line in the script:
 
-    TARGET_VERSION=$(get_latest_debian_version)
+TARGET_VERSION="bookworm"  # Example for Debian 12
 
-Replace it with:
+Replace "bookworm" with the codename or version number of the desired Debian version.
 
-    TARGET_VERSION="bullseye"  # For Debian 11
+Caution: Manual changes to the script should be made carefully.
 
-⚠️ Note: Manual changes to the script should be made carefully.
 
-🖥 Installation Steps
+🖥 Installation
 
-Download the Script
-Visit the Releases page and download the latest version.
+Download the Script: Clone the repository or download the script directly.
 
-Extract the ZIP File
-Unpack the ZIP file to your desired location.
+git clone https://github.com/ptech2009/debian-upgrade-script.git
 
-Navigate to the Script Directory
-Open a terminal and navigate to the extracted directory:
+Navigate to the Script Directory:
 
-    cd path_to_extracted_folder/debian-upgrade-script
+cd debian-upgrade-script
 
-Make the Script Executable
-Grant execution permissions to the script:
+Make the Script Executable:
 
-    chmod +x debian-upgrade.sh
+chmod +x debian-upgrade.sh
 
-Run the Script
-Execute the script with root privileges:
+Run the Script:
 
-    sudo ./debian-upgrade.sh [options]
+sudo ./debian-upgrade.sh [options]
+
 
 🔖 Versioning
 
