@@ -73,10 +73,12 @@ set_language_strings() {
         TEXT_TARGET_VERSION="Target Debian version:"
         TEXT_ALREADY_UP_TO_DATE="The system is already up-to-date."
         TEXT_UPGRADE_FROM_TO="The system will be upgraded from"
+        TEXT_TO="to"
         TEXT_CHECK_CONNECTION="Checking the reachability of Debian servers..."
         TEXT_SERVERS_REACHABLE="Debian servers are reachable."
         TEXT_INVALID_VERSION="Error: The Debian version '$TARGET_VERSION' is not valid or not available."
         TEXT_VALID_VERSION="The Debian version '$TARGET_VERSION' is valid."
+        TEXT_VALIDATING_VERSION="Validating version"
         TEXT_BACKUP_SOURCES="Creating backup of sources.list files..."
         TEXT_BACKUP_COMPLETED="Backup completed and stored in:"
         TEXT_UPDATING_SYSTEM="Updating the current system and fixing possible package errors..."
@@ -90,6 +92,8 @@ set_language_strings() {
         TEXT_REBOOTING="Rebooting the system now..."
         TEXT_REBOOT_LATER="Please reboot the system manually to complete the upgrade."
         TEXT_LOG_ROTATION="Rotating log file..."
+        TEXT_WARNING="Warning"
+        TEXT_DISABLED="Disabled"
     else
         TEXT_USAGE="Verwendung: $0 [Optionen]"
         TEXT_OPTIONS="Optionen:"
@@ -127,10 +131,12 @@ set_language_strings() {
         TEXT_TARGET_VERSION="Ziel-Debian-Version:"
         TEXT_ALREADY_UP_TO_DATE="Das System ist bereits auf dem neuesten Stand."
         TEXT_UPGRADE_FROM_TO="Das System wird aktualisiert von"
+        TEXT_TO="zu"
         TEXT_CHECK_CONNECTION="Überprüfe die Erreichbarkeit der Debian-Server..."
         TEXT_SERVERS_REACHABLE="Debian-Server sind erreichbar."
         TEXT_INVALID_VERSION="Fehler: Die Debian-Version '$TARGET_VERSION' ist nicht gültig oder nicht verfügbar."
         TEXT_VALID_VERSION="Die Debian-Version '$TARGET_VERSION' ist gültig."
+        TEXT_VALIDATING_VERSION="Validiere Version"
         TEXT_BACKUP_SOURCES="Erstelle Backup der sources.list Dateien..."
         TEXT_BACKUP_COMPLETED="Backup abgeschlossen und gespeichert unter:"
         TEXT_UPDATING_SYSTEM="Aktualisiere das aktuelle System und behebe mögliche Paketfehler..."
@@ -144,6 +150,8 @@ set_language_strings() {
         TEXT_REBOOTING="System wird jetzt neu gestartet..."
         TEXT_REBOOT_LATER="Bitte starten Sie das System manuell neu, um das Upgrade abzuschließen."
         TEXT_LOG_ROTATION="Rotieren der Log-Datei..."
+        TEXT_WARNING="Warnung"
+        TEXT_DISABLED="Deaktiviert"
     fi
 }
 
@@ -191,15 +199,16 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Funktion zur Fehlerprüfung nach Befehlen
-run_command() {
-    "$@"
-    local EXIT_CODE=$?
-    if [ $EXIT_CODE -ne 0 ]; then
-        log "$TEXT_ERROR: Command '$*' failed (Exit Code $EXIT_CODE)." >&2
-        exit $EXIT_CODE
-    fi
-}
+# Sicherstellen, dass das Skript als root ausgeführt wird
+if [ "$(id -u)" -ne 0 ]; then
+    echo "$TEXT_NOT_ROOT" >&2
+    exit 1
+fi
+
+# Logging einrichten
+LOGFILE="/var/log/debian-upgrade.log"
+LOGDIR=$(dirname "$LOGFILE")
+mkdir -p "$LOGDIR"  # Log-Verzeichnis erstellen, falls nicht vorhanden
 
 # Funktion für Logging mit Zeitstempel
 log() {
@@ -221,11 +230,36 @@ rotate_log() {
     fi
 }
 
-# Lock-File einrichten, um Mehrfachausführung zu verhindern
-LOCKFILE="/tmp/debian-upgrade.lock"
-exec 200>"$LOCKFILE"
+rotate_log  # Logrotation prüfen
 
-flock -n 200 || { log "$TEXT_ALREADY_RUNNING"; exit 1; }
+# Lock-File einrichten, um Mehrfachausführung zu verhindern
+LOCKFILE="/var/run/debian-upgrade.lock"
+
+# Überprüfen ob Lock-File bereits existiert
+if [ -f "$LOCKFILE" ]; then
+    LOCK_PID=$(cat "$LOCKFILE" 2>/dev/null)
+    if [ -n "$LOCK_PID" ] && kill -0 "$LOCK_PID" 2>/dev/null; then
+        log "$TEXT_ALREADY_RUNNING"
+        exit 1
+    else
+        # Verwaistes Lock-File entfernen
+        rm -f "$LOCKFILE"
+    fi
+fi
+
+# Neues Lock-File erstellen
+echo $$ > "$LOCKFILE"
+trap 'rm -f "$LOCKFILE"; exit' INT TERM EXIT
+
+# Funktion zur Fehlerprüfung nach Befehlen
+run_command() {
+    "$@"
+    local EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0 ]; then
+        log "$TEXT_ERROR: Command '$*' failed (Exit Code $EXIT_CODE)." >&2
+        exit $EXIT_CODE
+    fi
+}
 
 # Ziel-Debian-Version festlegen
 # "auto" bewirkt, dass immer die aktuelle Stable-Version ermittelt wird
@@ -269,18 +303,6 @@ check_connection() {
     fi
 }
 
-# Sicherstellen, dass das Skript als root ausgeführt wird
-if [ "$(id -u)" -ne 0 ]; then
-    echo "$TEXT_NOT_ROOT" >&2
-    exit 1
-fi
-
-# Logging einrichten
-LOGFILE="/var/log/debian-upgrade.log"
-LOGDIR=$(dirname "$LOGFILE")
-mkdir -p "$LOGDIR"  # Log-Verzeichnis erstellen, falls nicht vorhanden
-rotate_log  # Logrotation prüfen
-
 log "$TEXT_STARTING"
 
 # Überprüfung auf installierte Fremdpakete
@@ -316,7 +338,7 @@ fi
 
 # Überprüfung auf nicht offizielle Debian-Repositories
 log "$TEXT_CHECK_EXTERNAL"
-EXTERNAL_REPOS=$(grep -rE '^(deb|deb-src) ' /etc/apt/sources.list /etc/apt/sources.list.d/ | grep -vE 'debian\.org|security\.debian\.org|ftp\.debian\.org|deb\.debian\.org')
+EXTERNAL_REPOS=$(grep -rE '^(deb|deb-src) ' /etc/apt/sources.list /etc/apt/sources.list.d/ 2>/dev/null | grep -vE 'debian\.org|security\.debian\.org|ftp\.debian\.org|deb\.debian\.org' || true)
 if [ -n "$EXTERNAL_REPOS" ]; then
     log "$TEXT_EXTERNAL_FOUND"
     log "$EXTERNAL_REPOS"
@@ -358,7 +380,7 @@ fi
 
 # Überprüfung auf ausstehende Konfigurationsänderungen
 log "$TEXT_CHECK_PENDING_CONFIGS"
-PENDING_CONFIGS=$(find /etc -name '*.dpkg-new' -o -name '*.ucf-dist')
+PENDING_CONFIGS=$(find /etc -name '*.dpkg-new' -o -name '*.ucf-dist' 2>/dev/null || true)
 if [ -n "$PENDING_CONFIGS" ]; then
     log "$TEXT_PENDING_CONFIGS_FOUND"
     log "$PENDING_CONFIGS"
@@ -372,6 +394,7 @@ if [ -n "$PENDING_CONFIGS" ]; then
         log "$TEXT_RESOLVING_PENDING"
         for CONFIG_FILE in $PENDING_CONFIGS; do
             ORIGINAL_FILE="${CONFIG_FILE%.dpkg-new}"
+            ORIGINAL_FILE="${ORIGINAL_FILE%.ucf-dist}"
             if [ -f "$ORIGINAL_FILE" ]; then
                 mv "$CONFIG_FILE" "$ORIGINAL_FILE"
                 log "Updated configuration: $ORIGINAL_FILE"
@@ -471,6 +494,9 @@ run_command apt-get autoclean -y
 # Letzter Neustart
 log "$TEXT_UPGRADE_COMPLETE"
 if [ "$AUTO_REBOOT" = true ]; then
+    log "$TEXT_REBOOTING"
+    reboot
+else
     if [ "$ASSUME_YES" = true ]; then
         REBOOT_CONFIRM="y"
     else
@@ -483,6 +509,4 @@ if [ "$AUTO_REBOOT" = true ]; then
     else
         log "$TEXT_REBOOT_LATER"
     fi
-else
-    log "$TEXT_REBOOT_LATER"
 fi
