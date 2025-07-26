@@ -8,6 +8,7 @@ This script automates the process of upgrading a Debian-based system. It provide
     🔑 Root Privilege Check: Ensures the script is run with root privileges.
     🌐 Localization: Supports both English and German languages. Users can select their preferred language at the start.
     📡 Automatic Version Detection: Automatically detects the current Debian version.
+    🎯 Automatic Target Version: If TARGET_VERSION is set to "auto" (default), the script determines the current Debian stable release.
     ✍️ Manual Target Version: Allows specifying a target Debian version by adjusting the TARGET_VERSION variable in the script.
     🌐 Connection Check: Verifies connectivity to Debian servers.
     🔧 Source Update: Updates package sources and backs up existing configurations.
@@ -53,11 +54,11 @@ Note: The script now supports both English and German languages. At the start of
 
 📝 Manually Specify Target Version
 
-By default, the target Debian version is set within the script. To change the target version, modify the following line in the script:
+By default, the script sets TARGET_VERSION to "auto" and upgrades to the current Debian stable release. To upgrade to a specific version, modify the following line in the script:
 
-TARGET_VERSION="bookworm"  # Example for Debian 12
+TARGET_VERSION="auto"  # Automatically use the latest stable release
 
-Replace "bookworm" with the codename or version number of the desired Debian version.
+Replace "auto" with the codename or version number of the desired Debian version.
 
 Caution: Manual changes to the script should be made carefully.
 
@@ -106,6 +107,7 @@ Dieses Skript automatisiert den Prozess des Upgrades eines Debian-basierten Syst
     🔑 Root-Rechte Prüfung: Stellt sicher, dass das Skript mit Root-Rechten ausgeführt wird.
     🌐 Lokalisierung: Unterstützt Deutsch und Englisch. Zu Beginn können Sie Ihre bevorzugte Sprache auswählen.
     📡 Automatische Versionserkennung: Erkennt automatisch die aktuelle Debian-Version.
+    🎯 Automatische Zielversion: Bei "auto" (Standard) ermittelt das Skript automatisch die aktuelle Debian-Stable-Version.
     ✍️ Manuelle Zielversion: Ermöglicht das Festlegen einer Ziel-Debian-Version durch Anpassen der TARGET_VERSION-Variable im Skript.
     🌐 Verbindungsprüfung: Überprüft die Erreichbarkeit der Debian-Server.
     🔧 Quellenaktualisierung: Aktualisiert die Paketquellen und sichert bestehende Konfigurationen.
@@ -151,11 +153,11 @@ Hinweis: Das Skript unterstützt nun sowohl Deutsch als auch Englisch. Zu Beginn
 
 📝 Manuelles Festlegen der Zielversion
 
-Standardmäßig ist die Ziel-Debian-Version im Skript festgelegt. Um die Zielversion zu ändern, passen Sie die folgende Zeile im Skript an:
+Standardmäßig ist TARGET_VERSION auf "auto" gesetzt und das Skript aktualisiert auf die jeweils aktuelle Debian-Stable-Version. Um eine bestimmte Version zu wählen, ändern Sie folgende Zeile im Skript:
 
-TARGET_VERSION="bookworm"  # Beispiel für Debian 12
+TARGET_VERSION="auto"  # Nutzt automatisch die aktuell stabile Version
 
-Ersetzen Sie "bookworm" durch den Codenamen oder die Versionsnummer der gewünschten Debian-Version.
+Ersetzen Sie "auto" durch den Codenamen oder die Versionsnummer der gewünschten Debian-Version.
 
 Achtung: Manuelle Änderungen am Skript sollten sorgfältig vorgenommen werden.
 

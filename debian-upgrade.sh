@@ -227,8 +227,24 @@ exec 200>"$LOCKFILE"
 
 flock -n 200 || { log "$TEXT_ALREADY_RUNNING"; exit 1; }
 
-# Ziel-Debian-Version festlegen (kann angepasst werden)
-TARGET_VERSION="bookworm"  # Beispiel: "bookworm" für Debian 12
+# Ziel-Debian-Version festlegen
+# "auto" bewirkt, dass immer die aktuelle Stable-Version ermittelt wird
+TARGET_VERSION="auto"
+
+# Aktuelle Stable-Version von den Debian-Servern ermitteln
+detect_stable_version() {
+    local release_data
+    if command -v curl &> /dev/null; then
+        release_data=$(curl -fsSL http://ftp.debian.org/debian/dists/stable/Release)
+    elif command -v wget &> /dev/null; then
+        release_data=$(wget -qO- http://ftp.debian.org/debian/dists/stable/Release)
+    else
+        run_command apt-get update -y
+        run_command apt-get install -y curl
+        release_data=$(curl -fsSL http://ftp.debian.org/debian/dists/stable/Release)
+    fi
+    echo "$release_data" | grep -m1 '^Codename:' | awk '{print $2}'
+}
 
 # Funktion zum Überprüfen der Erreichbarkeit der Debian-Server
 check_connection() {
@@ -377,8 +393,10 @@ if ! command -v lsb_release &> /dev/null; then
     run_command apt-get install -y lsb-release
 fi
 CURRENT_VERSION=$(lsb_release -cs)
+if [ "$TARGET_VERSION" = "auto" ]; then
+    TARGET_VERSION=$(detect_stable_version)
+fi
 log "$TEXT_CURRENT_VERSION $CURRENT_VERSION"
-
 log "$TEXT_TARGET_VERSION $TARGET_VERSION"
 
 # Überprüfung, ob ein Upgrade erforderlich ist
