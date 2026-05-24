@@ -1,5 +1,8 @@
 # Debian Upgrade Script
 
+[![Version](https://img.shields.io/badge/version-1.0.6-blue.svg)](CHANGELOG.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 This script automates the process of upgrading a Debian-based system. It provides comprehensive safety checks and interactive options to ensure a smooth and secure upgrade experience.
 
 ---
@@ -117,8 +120,9 @@ sudo ./debian-upgrade.sh [options]
 
 ## 🔖 Versioning
 
-This project follows **Semantic Versioning**.  
-See [Releases](../../releases) for available versions.  
+This project follows **Semantic Versioning**.
+The current script version is **1.0.6**.
+See [CHANGELOG.md](CHANGELOG.md) and [Releases](../../releases) for available versions.
 
 ---
 

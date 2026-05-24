@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+VERSION="1.0.6"
+
 # ========= Defaults / Flags =========
 AUTO_REBOOT=false
 ASSUME_YES=false
